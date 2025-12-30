@@ -1,0 +1,157 @@
+.search-history-card {
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.search-history-card h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.history-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.select-all-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  user-select: none;
+}
+
+.select-all-checkbox input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.delete-selected-btn {
+  background: #ff5252;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.delete-selected-btn:hover {
+  background: #ff1744;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s, border 0.2s;
+  border: 2px solid transparent;
+}
+
+.history-item:hover {
+  background: #f0f1f3;
+}
+
+.history-item.selected {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.history-checkbox {
+  cursor: pointer;
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+}
+
+.history-ip {
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  flex: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+  color: #1976d2;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.history-ip:hover {
+  color: #1565c0;
+}
+
+.history-delete-btn {
+  background: #ffebee;
+  color: #c33;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  margin-left: 12px;
+}
+
+.history-delete-btn:hover {
+  background: #ffcdd2;
+}
+
+.search-history-empty {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Scrollbar styling */
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
