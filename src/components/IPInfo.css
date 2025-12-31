@@ -1,107 +1,101 @@
 .ip-info-card {
-  background: white;
-  border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  margin-bottom: 28px;
-  border: 1px solid #f1f5f9;
+  @apply rounded-2xl p-8 border border-slate-700/50;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);
   transition: all 0.3s ease;
 }
 
 .ip-info-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: #e2e8f0;
-}
-
-.ip-info-card h3 {
-  margin: 0 0 24px 0;
-  color: #0f172a;
-  font-size: 18px;
-  font-weight: 700;
-  text-transform: capitalize;
-  letter-spacing: -0.3px;
+  @apply border-cyan-500/30;
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
 }
 
 .ip-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 18px;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
 }
 
 .info-item {
-  display: flex;
-  flex-direction: column;
-  padding: 16px 18px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
+  @apply p-6 bg-slate-900/50 border border-slate-700 rounded-xl;
+  @apply transition-all duration-300 hover:border-cyan-500/30 hover:bg-slate-900/70;
+  position: relative;
+  overflow: hidden;
 }
 
-.info-item:hover {
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  border-color: #cbd5e1;
+.info-item::before {
+  content: '';
+  @apply absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300;
+  background: radial-gradient(600px at var(--mouse-x, 0) var(--mouse-y, 0), rgba(56, 189, 248, 0.1), transparent 80%);
+  pointer-events: none;
 }
 
-.info-item label {
-  color: #64748b;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  margin-bottom: 10px;
-  display: block;
+.info-label {
+  @apply block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3;
+  letter-spacing: 0.1em;
 }
 
 .info-value {
-  color: #0f172a;
-  font-size: 16px;
-  font-weight: 600;
-  word-break: break-word;
-  font-family: 'Courier New', monospace;
-  letter-spacing: -0.2px;
+  @apply text-slate-100 text-lg font-semibold break-words;
+  word-break: break-all;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  color: #38BDF8;
+}
+
+/* Skeleton loader */
+.ip-info-skeleton {
+  @apply rounded-2xl p-8;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);
+}
+
+.skeleton-header {
+  @apply flex items-center gap-3 mb-6;
+}
+
+.skeleton-label {
+  @apply h-4 bg-slate-700 rounded w-24 animate-pulse;
+}
+
+.skeleton-value {
+  @apply h-6 bg-slate-700 rounded w-40 mt-2 animate-pulse;
 }
 
 .ip-info-placeholder {
-  background: white;
-  border-radius: 14px;
-  padding: 40px 28px;
-  text-align: center;
-  color: #94a3b8;
-  margin-bottom: 28px;
-  border: 2px dashed #cbd5e1;
-  font-size: 15px;
-  font-weight: 500;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.5);
+  @apply rounded-2xl p-12 text-center;
+  @apply text-slate-400 border-2 border-dashed border-slate-700;
+  @apply text-sm font-medium;
 }
 
 .ip-info-error {
-  background: linear-gradient(135deg, #fef2f2 0%, #fee 100%);
-  border-left: 4px solid #dc2626;
-  color: #991b1b;
-  padding: 16px 18px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid #fecaca;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(12px);
+  @apply rounded-2xl p-6 border border-red-500/30 bg-red-500/10;
+  @apply flex items-center gap-3 text-red-400 font-semibold text-sm;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.2);
 }
 
-.ip-info-error::before {
-  content: '⚠';
-  font-size: 18px;
-  flex-shrink: 0;
+.ip-info-error svg {
+  @apply w-5 h-5 flex-shrink-0;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
-  .ip-info-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
+  .ip-info-card {
+    @apply p-6;
   }
-  
+
+  .ip-info-grid {
+    @apply grid-cols-1 gap-4;
+  }
+
   .info-item {
-    padding: 14px 16px;
+    @apply p-4;
+  }
+
+  .info-value {
+    @apply text-base;
   }
 }
+

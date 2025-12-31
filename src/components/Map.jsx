@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
@@ -14,10 +15,11 @@ const Map = ({ latitude, longitude, city, ip }) => {
     if (!mapInstanceRef.current) {
       mapInstanceRef.current = L.map(mapRef.current).setView([latitude, longitude], 10);
 
-      // Add tile layer
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
+      // Add dark tile layer (CartoDB dark)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors & CARTO',
         maxZoom: 19,
+        className: 'dark-tiles'
       }).addTo(mapInstanceRef.current);
     }
 
@@ -31,27 +33,33 @@ const Map = ({ latitude, longitude, city, ip }) => {
       }
     });
 
-    // Add new marker
+    // Add new marker with custom styling
     const customIcon = L.divIcon({
-      html: `<div class="map-marker">📍</div>`,
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
+      html: `<div class="map-marker-wrapper"><div class="map-marker-pulse"></div><div class="map-marker-icon">📍</div></div>`,
+      iconSize: [50, 50],
+      iconAnchor: [25, 50],
+      popupAnchor: [0, -50],
       className: 'custom-marker'
     });
 
     L.marker([latitude, longitude], { icon: customIcon })
-      .bindPopup(`<div class="marker-popup"><strong>${city || 'Location'}</strong><br/>IP: ${ip}</div>`)
+      .bindPopup(`<div class="marker-popup"><div class="marker-title">${city || 'Location'}</div><div class="marker-ip">${ip}</div></div>`, {
+        className: 'custom-popup'
+      })
       .addTo(mapInstanceRef.current)
       .openPopup();
 
   }, [latitude, longitude, city, ip]);
 
   return (
-    <div className="map-container">
-      <h3>Location Map</h3>
-      <div ref={mapRef} className="map"></div>
-    </div>
+    <motion.div
+      className="map-container glass rounded-2xl overflow-hidden border border-slate-700/50"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div ref={mapRef} className="map" />
+    </motion.div>
   );
 };
 

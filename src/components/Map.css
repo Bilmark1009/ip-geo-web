@@ -1,67 +1,49 @@
 .map-container {
-  background: white;
-  border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  margin-top: 28px;
-  border: 1px solid #f1f5f9;
-}
-
-.map-container h3 {
-  margin: 0 0 20px 0;
-  color: #0f172a;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+  @apply relative w-full rounded-2xl overflow-hidden border border-slate-700/50;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);
+  min-height: 500px;
 }
 
 .map {
-  width: 100%;
-  height: 400px;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  @apply w-full h-full rounded-2xl overflow-hidden;
+  min-height: 500px;
 }
 
+/* Dark theme for leaflet tiles */
 .leaflet-container {
-  background: #f8fafc;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: #111827;
+  font-family: inherit;
 }
 
-.leaflet-popup-content {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 13px;
-  color: #0f172a;
+.dark-tiles {
+  filter: brightness(0.85) contrast(1.1);
 }
 
-.marker-popup {
-  padding: 4px 0;
+/* Custom marker styling */
+.map-marker-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.marker-popup strong {
-  color: #667eea;
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 700;
+.map-marker-pulse {
+  @apply absolute inset-0 bg-cyan-500 rounded-full animate-ping;
+  opacity: 0.75;
 }
 
-.map-marker {
-  font-size: 32px;
-  line-height: 1;
-  text-align: center;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+.map-marker-icon {
+  @apply absolute inset-0 flex items-center justify-center text-3xl;
   animation: bounce 0.6s ease-out;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.8));
 }
 
 @keyframes bounce {
   0% {
-    transform: scale(0) translateY(-20px);
+    transform: scale(0) translateY(-30px);
     opacity: 0;
   }
   70% {
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1) translateY(0);
@@ -69,33 +51,85 @@
   }
 }
 
-.leaflet-control-attribution {
-  background: rgba(255, 255, 255, 0.9) !important;
-  font-size: 11px;
-  color: #64748b;
-}
-
-.leaflet-popup {
-  font-size: 13px;
-}
-
+/* Custom popup styling */
 .leaflet-popup-content-wrapper {
-  border-radius: 8px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  @apply rounded-xl bg-slate-800 border border-slate-700 shadow-lg;
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.3) !important;
 }
 
 .leaflet-popup-tip {
-  background: white;
+  @apply bg-slate-800;
+  background-color: rgba(30, 41, 59, 0.95) !important;
 }
 
-/* Responsive map */
+.marker-popup {
+  @apply text-slate-100;
+}
+
+.marker-title {
+  @apply text-cyan-400 font-semibold mb-2;
+}
+
+.marker-ip {
+  @apply text-slate-300 font-mono text-sm;
+}
+
+.leaflet-popup-content {
+  @apply text-slate-100 m-2;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+}
+
+/* Leaflet controls styling */
+.leaflet-control-attribution {
+  @apply bg-slate-800/50 border border-slate-700 text-slate-400 !important;
+  font-size: 11px !important;
+  backdrop-filter: blur(10px);
+}
+
+.leaflet-control-zoom {
+  @apply border border-slate-700;
+}
+
+.leaflet-control-zoom a {
+  @apply bg-slate-800/50 border-b border-slate-700 text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Leaflet popup close button */
+.leaflet-popup-close-button {
+  @apply text-slate-400 hover:text-cyan-400 !important;
+  top: 8px !important;
+  right: 8px !important;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .map {
-    height: 300px;
-  }
-  
   .map-container {
-    padding: 20px;
+    min-height: 350px;
+  }
+
+  .map {
+    min-height: 350px;
+  }
+
+  .map-marker-icon {
+    @apply text-2xl;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-container {
+    min-height: 300px;
+  }
+
+  .map {
+    min-height: 300px;
+  }
+
+  .map-marker-icon {
+    @apply text-xl;
   }
 }

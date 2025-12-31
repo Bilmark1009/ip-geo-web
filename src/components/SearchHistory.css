@@ -1,99 +1,205 @@
 .search-history-card {
-  background: white;
-  border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f1f5f9;
+  @apply rounded-2xl p-8 border border-slate-700/50;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);
 }
 
 .history-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 16px;
+  @apply flex justify-between items-center mb-8 gap-4 flex-wrap;
 }
 
-.search-history-card h3 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+.history-title {
+  @apply flex items-center gap-3 text-slate-100 font-bold text-lg;
+}
+
+.history-count {
+  @apply px-3 py-1 bg-cyan-500/20 border border-cyan-500/50 rounded-full;
+  @apply text-cyan-400 font-mono font-semibold text-sm;
 }
 
 .history-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  @apply flex items-center gap-3;
 }
 
 .select-all-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  color: #666;
-  user-select: none;
+  @apply flex items-center gap-2 cursor-pointer select-none;
+  @apply text-slate-300 text-sm font-medium transition-colors duration-200;
+}
+
+.select-all-checkbox:hover {
+  @apply text-cyan-400;
 }
 
 .select-all-checkbox input[type="checkbox"] {
-  cursor: pointer;
+  @apply w-4 h-4 cursor-pointer accent-cyan-500;
 }
 
 .delete-selected-btn {
-  background: #ff5252;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  transition: background-color 0.2s;
+  @apply px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50;
+  @apply rounded-lg text-red-400 font-semibold text-sm transition-all duration-300;
+  @apply flex items-center gap-2 cursor-pointer;
 }
 
 .delete-selected-btn:hover {
-  background: #ff1744;
+  @apply border-red-500;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.3);
 }
 
 .history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 300px;
-  overflow-y: auto;
+  @apply flex flex-col gap-3 max-h-96 overflow-y-auto;
 }
 
 .history-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #333;
-  transition: background-color 0.2s, border 0.2s;
-  border: 2px solid transparent;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(12px);
+  @apply p-4 rounded-xl border border-slate-700/50 flex items-center justify-between;
+  @apply transition-all duration-300 hover:border-cyan-500/30;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.05);
 }
 
 .history-item:hover {
-  background: #f0f1f3;
+  @apply bg-slate-900/60;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
 }
 
 .history-item.selected {
-  background: #e3f2fd;
-  border-color: #2196f3;
+  @apply bg-cyan-500/10 border-cyan-500/50;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
 }
 
 .history-checkbox {
-  cursor: pointer;
-  margin-right: 12px;
-  width: 18px;
-  height: 18px;
+  @apply w-5 h-5 mr-4 cursor-pointer accent-cyan-500;
+}
+
+.history-ip {
+  @apply flex-1 font-mono text-slate-200 cursor-pointer transition-colors duration-200;
+  @apply hover:text-cyan-400 break-all;
+  letter-spacing: 0.05em;
+}
+
+.history-actions {
+  @apply flex items-center gap-2 ml-4;
+}
+
+.history-copy-btn,
+.history-delete-btn {
+  @apply p-2 rounded-lg transition-all duration-300;
+  @apply text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10;
+}
+
+.history-copy-btn:hover,
+.history-delete-btn:hover {
+  @apply text-red-400 hover:bg-red-500/10;
+}
+
+.search-history-empty {
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.5);
+  @apply rounded-2xl p-12 text-center;
+  @apply text-slate-400 border-2 border-dashed border-slate-700;
+  @apply text-sm font-medium;
+}
+
+.empty-icon {
+  @apply text-4xl mb-4;
+}
+
+/* Scrollbar styling */
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  @apply bg-slate-800/30 rounded;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  @apply bg-cyan-500/30 rounded;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  @apply bg-cyan-500/50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .history-item {
+    @apply flex-col items-start gap-3;
+  }
+
+  .history-actions {
+    @apply w-full ml-0 justify-end;
+  }
+
+  .history-checkbox {
+    @apply mr-0;
+  }
+}
+
+
+.history-copy-btn,
+.history-delete-btn {
+  @apply p-2 rounded-lg transition-all duration-200;
+  @apply hover:bg-slate-700/50 cursor-pointer text-slate-400 hover:text-cyan-400;
+}
+
+.history-delete-btn {
+  @apply hover:text-red-400 hover:bg-red-500/20;
+}
+
+.search-history-empty {
+  @apply rounded-2xl p-12 text-center border border-slate-700/50;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.05);
+}
+
+.empty-icon {
+  @apply text-4xl mb-4;
+}
+
+.search-history-empty p {
+  @apply text-slate-400 font-medium;
+}
+
+/* Custom scrollbar */
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  @apply bg-slate-800/50 rounded-lg;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  @apply bg-cyan-500/50 rounded-lg hover:bg-cyan-500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-history-card {
+    @apply p-6;
+  }
+
+  .history-header {
+    @apply flex-col items-start;
+  }
+
+  .history-list {
+    @apply max-h-64;
+  }
+
+  .history-item {
+    @apply flex-col items-start gap-3;
+  }
+
+  .history-actions {
+    @apply w-full ml-0 justify-end;
+  }
+
+  .history-checkbox {
+    @apply mr-0;
+  }
 }
 
 .history-ip {
