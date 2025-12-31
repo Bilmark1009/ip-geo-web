@@ -1,16 +1,15 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ip-geo-api-production-0c91.up.railway.app';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-// Request interceptor
+// Add request interceptor to include auth token
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -24,12 +23,12 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor
+// Add response interceptor to handle errors
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized (e.g., redirect to login)
+      // Handle unauthorized access
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
@@ -37,48 +36,26 @@ apiClient.interceptors.response.use(
   }
 );
 
-export const login = async (email, password) => {
-  try {
-    const response = await apiClient.post('/api/login', { email, password });
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
-    return response.data;
-  } catch (error) {
-    console.error('Login error:', error.response?.data || error.message);
-    throw error;
-  }
+// Auth endpoints
+export const login = (email, password) => {
+  return apiClient.post('/login', { email, password });
 };
 
-export const getIPInfo = async (ip = null) => {
-  try {
-    const params = ip ? { ip } : {};
-    const response = await apiClient.get('/api/ip-info', { params });
-    return response.data;
-  } catch (error) {
-    console.error('IP Info error:', error.response?.data || error.message);
-    throw error;
-  }
+export const register = (userData) => {
+  return apiClient.post('/register', userData);
 };
 
-export const register = async (userData) => {
-  try {
-    const response = await apiClient.post('/api/register', userData);
-    return response.data;
-  } catch (error) {
-    console.error('Registration error:', error.response?.data || error.message);
-    throw error;
+// IP Info endpoint
+export const getIPInfo = (ip = null) => {
+  if (ip) {
+    return apiClient.get('/ip-info', { params: { ip } });
   }
+  return apiClient.get('/ip-info');
 };
 
-export const getProfile = async () => {
-  try {
-    const response = await apiClient.get('/api/profile');
-    return response.data;
-  } catch (error) {
-    console.error('Profile error:', error.response?.data || error.message);
-    throw error;
-  }
+// Token validation
+export const validateToken = () => {
+  return apiClient.get('/validate-token');
 };
 
 export default apiClient;
