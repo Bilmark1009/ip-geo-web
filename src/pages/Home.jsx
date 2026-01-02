@@ -243,26 +243,7 @@ const Home = () => {
           />
         </motion.section>
 
-        {/* Search Results */}
-        <AnimatePresence>
-          {searchedIP && (
-            <motion.section
-              className="ip-section"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="section-header">
-                <h2>
-                  <span className="text-cyan-400">{searchedIP.ip}</span> Results
-                </h2>
-              </div>
-              <IPInfo ipData={searchedIP} loading={false} error={null} />
-            </motion.section>
-          )}
-        </AnimatePresence>
-
+        
         {/* Map Section */}
         <AnimatePresence>
           {displayIP && displayIP.loc && (
