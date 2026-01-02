@@ -1,25 +1,73 @@
-import axios from 'axios';
+  import axios from 'axios';
 
-// This is correct - your base URL includes /api
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ip-geo-api-production-0c91.up.railway.app/api';
+  // Base URL for the API
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ip-geo-api-production-0c91.up.railway.app/api';
 
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+  // Create axios instance with default config
+  const apiClient = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    },
+    withCredentials: true
+  });
 
-// Remove '/auth' from the path since it's already in the base URL
-export const login = (email, password) => {
-  return apiClient.post('/login', { email, password });
-};
+  // Add request interceptor to add timestamp to prevent caching
+  apiClient.interceptors.request.use(config => {
+    // Add timestamp to prevent caching
+    if (config.method === 'get') {
+      config.params = {
+        ...config.params,
+        _t: Date.now()
+      };
+    }
+    return config;
+  }, error => {
+    return Promise.reject(error);
+  });
 
-export const getIPInfo = (ip = null) => {
-  if (ip) {
-    return apiClient.get('/ip-info', { params: { ip } });
-  }
-  return apiClient.get('/ip-info');
-};
+  // Add response interceptor for better error handling
+  apiClient.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error('API Error:', {
+          status: error.response.status,
+          data: error.response.data,
+          headers: error.response.headers,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Request setup error:', error.message);
+      }
+      return Promise.reject(error);
+    }
+  );
 
-export default apiClient;
+  // Authentication
+  const auth = {
+    login: (email, password) => apiClient.post('/api/login', { email, password }),
+    logout: () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      delete apiClient.defaults.headers.common['Authorization'];
+    }
+  };
+
+  // IP Information
+  const ipInfo = {
+    get: (ip = null) => {
+      const params = ip ? { ip } : {};
+      return apiClient.get('/api/ip-info', { params });
+    }
+  };
+
+  export { auth, ipInfo };
+  export default apiClient;
