@@ -190,7 +190,7 @@ const LoginForm = () => {
               <strong className="text-cyan-400">Demo Credentials:</strong>
             </p>
             <p className="text-xs text-slate-500 font-mono">
-              test@example.com
+              admin@example.com
             </p>
             <p className="text-xs text-slate-500 font-mono">
               password123
