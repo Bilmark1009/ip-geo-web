@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, Search, Trash2, MapPin, Clock } from 'lucide-react';
-import { ipInfo } from '../services/api';
+import { getIPInfo } from '../services/api';
 import IPInfo from '../components/IPInfo';
 import SearchHistory from '../components/SearchHistory';
 import Map from '../components/Map';
@@ -37,27 +37,14 @@ const Home = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await ipInfo.get();
-      const ipData = response.data?.data || response.data;
-      
-      if (!ipData) {
-        throw new Error('No data received from server');
-      }
-      
+      const response = await getIPInfo();
+      const ipData = response.data.data || response.data;
       setCurrentIP(ipData);
       setSearchedIP(null);
       setInputIP('');
-      
-      // Add to search history
-      setHistory(prev => [
-        { ip: ipData.ip, timestamp: new Date().toISOString() },
-        ...prev.slice(0, 9) // Keep only last 10 items
-      ]);
-      
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch IP information';
-      setError(errorMessage);
-      console.error('Error fetching IP:', err);
+      setError('Failed to fetch current IP information');
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -72,12 +59,6 @@ const Home = () => {
       setError('Please enter an IP address');
       return;
     }
-    
-    if (!validateIP(trimmedIP)) {
-      setError('Please enter a valid IP address (e.g., 192.168.1.1)');
-      return;
-    }
-    }
 
     if (!validateIP(trimmedIP)) {
       setError('Invalid IP address format');
@@ -87,25 +68,17 @@ const Home = () => {
     setLoading(true);
 
     try {
-      setLoading(true);
-      const response = await ipInfo.get(trimmedIP);
-      const ipData = response.data?.data || response.data;
-      
-      if (!ipData) {
-        throw new Error('No data received from server');
-      }
-      
+      const response = await getIPInfo(trimmedIP);
+      const ipData = response.data.data || response.data;
       setSearchedIP(ipData);
       
-      // Add to search history
-      setHistory(prev => [
-        { ip: trimmedIP, timestamp: new Date().toISOString() },
-        ...prev.filter(item => item.ip !== trimmedIP).slice(0, 9) // Keep only last 10 unique items
-      ]);
+      if (!history.includes(trimmedIP)) {
+        setHistory([trimmedIP, ...history]);
+      }
+      setInputIP('');
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch IP information';
-      setError(errorMessage);
-      console.error('Error searching IP:', err);
+      setError('Failed to fetch IP information. Please check the IP address.');
+      console.error(err);
     } finally {
       setLoading(false);
     }
