@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, ShieldAlert, Zap } from 'lucide-react';
-import { login } from '../services/api';
+import { auth } from '../services/api';
 import './LoginForm.css';
 
 const LoginForm = () => {
