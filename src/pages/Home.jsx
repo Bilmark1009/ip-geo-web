@@ -237,7 +237,7 @@ const Home = () => {
             </h2>
           </div>
           <IPInfo
-            ipData={currentIP}
+            ipData={searchedIP || currentIP}
             loading={loading && !searchedIP}
             error={!searchedIP && error}
           />
